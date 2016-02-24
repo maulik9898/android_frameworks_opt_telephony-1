@@ -1759,6 +1759,7 @@ public final class ImsPhoneCallTracker extends CallTracker {
                     }
                     mPhone.getServiceState().setRilImsRadioTechnology(getRilImsRadioTechnology());
                     mPhone.onFeatureCapabilityChanged();
+                    mImsManager.setVolteCallCapability(isVolteEnabled());
                 }
 
                 if (tmpIsVideoCallEnabled != isVideoCallEnabled()) {
