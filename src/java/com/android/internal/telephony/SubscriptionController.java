@@ -809,7 +809,7 @@ public class SubscriptionController extends ISub.Stub {
                                     .getPhoneCount()) {
                                 Rlog.i(LOG_TAG, "Subscription is invalid. Set default to " + subId);
                                 setDefaultSmsSubId(subId);
-                                PhoneFactory.setSMSPromptEnabled(true);
+                                PhoneFactory.setSMSPromptEnabled(subIdCountMax > 1);
                             }
 
                         } else {
@@ -859,6 +859,10 @@ public class SubscriptionController extends ISub.Stub {
             sPhones[slotId].updateDataConnectionTracker();
 
             if (DBG) logdl("[addSubInfoRecord]- info size=" + sSlotIdxToSubId.size());
+
+            if (sSlotIdxToSubId.size() <= 1) {
+                PhoneFactory.setSMSPromptEnabled(false);
+            }
 
         } finally {
             Binder.restoreCallingIdentity(identity);
