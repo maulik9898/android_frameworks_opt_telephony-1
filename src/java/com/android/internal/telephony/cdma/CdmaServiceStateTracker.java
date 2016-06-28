@@ -1149,8 +1149,8 @@ public class CdmaServiceStateTracker extends ServiceStateTracker {
         // Save the roaming state before carrier config possibly overrides it.
         mNewSS.setDataRoamingFromRegistration(mNewSS.getDataRoaming());
 
-        ICarrierConfigLoader configLoader =
-            (ICarrierConfigLoader) ServiceManager.getService(Context.CARRIER_CONFIG_SERVICE);
+        ICarrierConfigLoader configLoader = ICarrierConfigLoader.Stub
+                .asInterface(ServiceManager.getService(Context.CARRIER_CONFIG_SERVICE));
         if (configLoader != null) {
             try {
                 PersistableBundle b = configLoader.getConfigForSubId(mPhone.getSubId());
