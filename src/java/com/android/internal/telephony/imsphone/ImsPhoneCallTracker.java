@@ -1669,10 +1669,9 @@ public final class ImsPhoneCallTracker extends CallTracker {
     private ImsConnectionStateListener mImsConnectionStateListener =
         new ImsConnectionStateListener() {
         @Override
-        public void onImsConnectedWithRadioTech(int imsRadioTech) {
-            if (DBG) log("onImsConnected imsRadioTech=" + imsRadioTech);
+        public void onImsConnected() {
+            if (DBG) log("onImsConnected");
             mPhone.setServiceState(ServiceState.STATE_IN_SERVICE);
-            mPhone.setVoiceRadioTech(imsRadioTech);
             mPhone.setImsRegistered(true);
             mPhone.notifyServiceStateChanged(mPhone.getServiceState());
         }
@@ -1681,7 +1680,6 @@ public final class ImsPhoneCallTracker extends CallTracker {
         public void onImsDisconnected(ImsReasonInfo imsReasonInfo) {
             if (DBG) log("onImsDisconnected imsReasonInfo=" + imsReasonInfo);
             mPhone.setServiceState(ServiceState.STATE_OUT_OF_SERVICE);
-            mPhone.setVoiceRadioTech(ServiceState.RIL_RADIO_TECHNOLOGY_UNKNOWN);
             mPhone.setImsRegistered(false);
             mPhone.processDisconnectReason(imsReasonInfo);
             mPhone.notifyServiceStateChanged(mPhone.getServiceState());
@@ -1691,7 +1689,6 @@ public final class ImsPhoneCallTracker extends CallTracker {
         public void onImsProgressing() {
             if (DBG) log("onImsProgressing");
             mPhone.setServiceState(ServiceState.STATE_OUT_OF_SERVICE);
-            mPhone.setVoiceRadioTech(ServiceState.RIL_RADIO_TECHNOLOGY_UNKNOWN);
             mPhone.setImsRegistered(false);
             mPhone.notifyServiceStateChanged(mPhone.getServiceState());
         }
@@ -1700,10 +1697,6 @@ public final class ImsPhoneCallTracker extends CallTracker {
         public void onImsResumed() {
             if (DBG) log("onImsResumed");
             mPhone.setServiceState(ServiceState.STATE_IN_SERVICE);
-            /**
-             * TODO: As of now, no caller for onImsResumed.
-             * When used, make sure to update RAT information, in sync with onImsSuspended.
-             */
             mPhone.notifyServiceStateChanged(mPhone.getServiceState());
         }
 
@@ -1711,10 +1704,6 @@ public final class ImsPhoneCallTracker extends CallTracker {
         public void onImsSuspended() {
             if (DBG) log("onImsSuspended");
             mPhone.setServiceState(ServiceState.STATE_OUT_OF_SERVICE);
-            /**
-             * TODO: As of now, no caller for onImsSuspended.
-             * When used, make sure to update RAT information, in sync with onImsResumed.
-             */
             mPhone.notifyServiceStateChanged(mPhone.getServiceState());
         }
 
